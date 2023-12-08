@@ -47,22 +47,17 @@ try:
     print("Connecting to target server...")
     target_ssh = ssh.invoke_shell()
     target_ssh.send(f'ssh {creds["username"]}@greene.hpc.nyu.edu\n')
+    time.sleep(5)
     # Wait for the password prompt and send the password
     # while not target_ssh.recv_ready():  # Wait for the server to be ready
-    time.sleep(5)
     target_ssh.send(creds['password'] + '\n')
-
     print("Connection to target server successful")
 
     sbatch_command = f'sbatch /scratch/{creds["username"]}/test/hello-python.sbatch'
+    time.sleep(5)
     # sbatch_command = 'cd /scratch/'+creds['username']+'/mro_env/jobs && sbatch job.slurm'
 
-    # while not target_ssh.recv_ready():  # Wait for the server to be ready
-    time.sleep(5)
-
     target_ssh.send(sbatch_command + '\n')
-
-    # Print the output from the command execution
     # while not target_ssh.recv_ready():  # Wait for the server to be ready
     time.sleep(2)
     output = target_ssh.recv(1024)
